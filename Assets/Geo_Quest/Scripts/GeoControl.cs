@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GeoControl : MonoBehaviour
 {
     private Rigidbody2D rb;
     int varTwo = 3;
     public int speed = 3;
+   public string loadscene;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,9 +29,21 @@ public class GeoControl : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Hit");
+        switch(collision.tag) 
+        {
+            case "Finish":
+                SceneManager.LoadScene(loadscene);
+                break;
+            case "Death":
+                string thisScene = SceneManager.GetActiveScene().name;
+                SceneManager.LoadScene(thisScene);
+                break;
+
+        }
+
+
 
     }
-}
+    }
 
 
