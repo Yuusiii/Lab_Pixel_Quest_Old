@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 
 public class PlayerJump : MonoBehaviour
 {
@@ -30,15 +26,14 @@ public class PlayerJump : MonoBehaviour
     void Update()
     {
         GroundCheck = Physics2D.OverlapCapsule(FeetCollider.position, new Vector2(CapsuleHeight, CapsuleRadius), CapsuleDirection2D.Horizontal, 0, GroundMask);
-        if (Input.GetKeyDown(KeyCode.Space) && GroundCheck|| WaterCheck)
+        if (Input.GetKeyDown(KeyCode.Space) && (GroundCheck|| WaterCheck))
         {
             rb.velocity = new Vector2(rb.velocity.x, JumpForce);
         }
-        if (rb.velocity.x < 0)
-        {
+
             if (rb.velocity.y < 0 && !WaterCheck)   
             rb.velocity += GravityVector * (FallForce * Time.deltaTime);
-        }
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

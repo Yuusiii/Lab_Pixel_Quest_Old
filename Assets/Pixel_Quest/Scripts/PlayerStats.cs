@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerStats : MonoBehaviour
 
+public class PlayerStats : MonoBehaviour
 {
+    
     public string nextlevel = "Level2"; 
     public string loadscene;
     // Start is called before the first frame update
@@ -14,6 +15,8 @@ public class PlayerStats : MonoBehaviour
 
     }
 
+    private int health = 3;
+    private int coinCount = 0;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         switch (collision.tag)
@@ -29,7 +32,19 @@ public class PlayerStats : MonoBehaviour
                     SceneManager.LoadScene(thisScene);
                     break;
                 }
+            case "Coin":
+                {
+                    coinCount++;
+                    Destroy(collision.gameObject);
+                    break;
+                }
 
+            case "Health":
+                { 
+                    health++;
+                    Destroy(collision.gameObject);
+                    break;
+                }
         }
     }
 }
