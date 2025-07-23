@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class PlayerStats : MonoBehaviour
 {
-    
+    // string nextlevel = "GeoLevel_2"
     public string nextlevel = "Level2"; 
     public string loadscene;
     // Start is called before the first frame update
@@ -15,21 +13,32 @@ public class PlayerStats : MonoBehaviour
 
     }
 
-    private int health = 3;
-    private int coinCount = 0;
+    public int health = 3;
+    public int coinCount = 0;
+
+    public Transform RespawnPoint;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         switch (collision.tag)
         {
             case "Finish":
                 {
-                    SceneManager.LoadScene(loadscene);
+                    string nextlevel = collision.transform.GetComponent<LevelGoal>().nextlevel;
+                    SceneManager.LoadScene(nextlevel);
                     break;
                 }
             case "Death":
                 {
-                    string thisScene = SceneManager.GetActiveScene().name;
-                    SceneManager.LoadScene(thisScene);
+                    health--;
+                    if (health <= 0)
+                    {
+                        string thisScene = SceneManager.GetActiveScene().name;
+                        SceneManager.LoadScene(thisScene);
+                    }
+                    else
+                    {
+                        transform.position = RespawnPoint.position;
+                    }
                     break;
                 }
             case "Coin":
@@ -40,12 +49,21 @@ public class PlayerStats : MonoBehaviour
                 }
 
             case "Health":
-                { 
-                    health++;
-                    Destroy(collision.gameObject);
+                {
+                    if (health < 3)
+                    {
+                        Destroy(collision.gameObject);
+                        health++;
+                    }
+                    break;
+
+                }
+            case "Respawn":{ 
+                    RespawnPoint.position = collision.transform.Find("Point").position;
                     break;
                 }
         }
+
     }
 }
 
